@@ -17,5 +17,4 @@ class Product {
     private String imageUrl;
     private int quantity;
     private int price;
-
 }
