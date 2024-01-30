@@ -14,19 +14,3 @@ public class LineRequestResponse {
     private final String returnMessage;
     private final Info info;
 }
-
-@Getter
-@AllArgsConstructor
-class Info {
-    private final PaymentUrl paymentUrl;
-    private final String transactionId;
-    private final String paymentAccessToken;
-}
-
-@Getter
-@AllArgsConstructor
-class PaymentUrl {
-
-    private final String web;
-    private final String app;
-}

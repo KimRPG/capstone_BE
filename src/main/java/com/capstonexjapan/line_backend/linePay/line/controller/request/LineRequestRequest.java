@@ -1,4 +1,4 @@
-package com.capstonexjapan.line_backend.linePay.line.controller.request.request;
+package com.capstonexjapan.line_backend.linePay.line.controller.request;
 
 import com.capstonexjapan.line_backend.linePay.line.domain.entity.LinePayRequestEntity;
 import com.capstonexjapan.line_backend.linePay.line.domain.entity.Packages;
