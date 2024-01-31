@@ -2,6 +2,7 @@ package com.capstonexjapan.line_backend.linePay.line.service;
 
 import com.capstonexjapan.line_backend.linePay.line.controller.request.LineRequestRequest;
 import com.capstonexjapan.line_backend.linePay.line.controller.response.LineRequestResponse;
+import com.capstonexjapan.line_backend.linePay.line.domain.entity.RedirectUrls;
 import com.capstonexjapan.line_backend.linePay.line.util.Headers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,13 @@ public class LineService {
     @Value("${line-pay.url}")
     private String url;
 
-    private String nonce = UUID.randomUUID().toString();
+    @Value("${line-pay.confirmUrl}")
+    private String confirmUrl;
+
+    @Value("${line-pay.cancelUrl}")
+    private String cancelUrl;
+
+    private final String nonce = UUID.randomUUID().toString();
 
     // Request API
     public LineRequestResponse postRequest(LineRequestRequest request) {
@@ -39,22 +46,29 @@ public class LineService {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             String requestBody = objectMapper.writeValueAsString(request);
-
-            HttpHeaders headers = Headers.postHeaders(channelId, channelSecretKey, "/v3/payments/request", requestBody, nonce);
+            HttpHeaders headers = Headers.postHeaders(
+                    channelId,
+                    channelSecretKey,
+                    "/v3/payments/request",
+                    requestBody,
+                    nonce);
 
             HttpEntity<LineRequestRequest> requestEntity = new HttpEntity<>(request, headers);
-
             ResponseEntity<LineRequestResponse> responseEntity = restTemplate.exchange(
                     url + "/v3/payments/request",
                     HttpMethod.POST,
                     requestEntity,
                     LineRequestResponse.class
             );
-
             return responseEntity.getBody();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+    public LineRequestRequest createBody(){
+        RedirectUrls urls = new RedirectUrls(confirmUrl, cancelUrl);
+
+
     }
 }

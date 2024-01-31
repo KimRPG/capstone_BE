@@ -8,7 +8,10 @@ import java.util.Base64;
 
 public class HmacSignUtil {
 
-    public static String getAuthTex(String secretKey, String requestUrl,  String requestBody, String nonce) {
+    public static String getAuthTex(String secretKey,
+                                    String requestUrl,
+                                    String requestBody,
+                                    String nonce) {
         return secretKey + requestUrl + requestBody + nonce;
     }
 

@@ -1,8 +1,8 @@
 package com.capstonexjapan.line_backend.linePay.line.domain.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,18 +10,16 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LinePayRequestEntity {
-
+class Package {
     @Id
-    private String orderId;
+    private String packageId;
     private int amount;
-    private String currency;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
-    private List<Packages> packages;
+    @JoinColumn(name = "package_id")
+    private List<Product> products;
 
+    // Constructors, getters, and setters
 }

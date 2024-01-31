@@ -25,9 +25,14 @@ public class LineRequestRequest {
                 .amount(this.amount)
                 .currency(this.currency)
                 .packages(this.packages)
-                .redirectUrls(this.redirectUrls)
                 .build();
     }
+
+    public LineRequestRequest(RedirectUrls redirectUrls){
+        this.redirectUrls = redirectUrls;
+    }
+
+
 }
 
 
