@@ -66,9 +66,9 @@ public class LineService {
             return null;
         }
     }
-    public LineRequestRequest createBody(){
-        RedirectUrls urls = new RedirectUrls(confirmUrl, cancelUrl);
-
-
-    }
+//    public LineRequestRequest createBody(){
+//        RedirectUrls urls = new RedirectUrls(confirmUrl, cancelUrl);
+//
+//
+//    }
 }
