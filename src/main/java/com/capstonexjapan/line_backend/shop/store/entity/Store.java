@@ -21,6 +21,8 @@ public class Store {
 
     private String name;
 
+    private String brand;
+
     private String storeNumber;
 
     
