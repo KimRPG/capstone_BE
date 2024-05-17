@@ -7,11 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -28,7 +29,8 @@ public class Product {
     private String imageUrl;
     private Integer price;
 
-    private boolean isSoldOut;
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
     private Integer amount;
     private String description;
@@ -41,6 +43,16 @@ public class Product {
 //    @ManyToOne
 //    private Store store;
 
+    @PrePersist
+    protected void onCreate() {
+        if (this.imageUrl == null) {
+            this.imageUrl = "기본이미지";
+        }
+        if (this.status == null) {
+            this.status = ProductStatus.AVAILABLE;
+        }
+    }
+
     public Product toEntity(CreateProduct dto) {
         return Product.builder()
                 .name(dto.getName())
@@ -52,11 +64,11 @@ public class Product {
     }
 
     public void update(UpdateProduct dto) {
-        this.name = dto.getName();
-        this.imageUrl = dto.getImageUrl();
-        this.price = dto.getPrice();
-        this.isSoldOut = dto.isSoldOut();
-        this.amount = dto.getAmount();
-        this.description = dto.getDescription();
+        if (StringUtils.isNotBlank(dto.getName())) this.name = dto.getName();
+        if (StringUtils.isNotBlank(dto.getImageUrl())) this.imageUrl = dto.getImageUrl();
+        if (Objects.nonNull(dto.getPrice())) this.price = dto.getPrice();
+        if (Objects.nonNull(dto.getStatus())) this.status = dto.getStatus();
+        if (Objects.nonNull(dto.getAmount())) this.amount = dto.getAmount();
+        if (StringUtils.isNotBlank(dto.getDescription())) this.description = dto.getDescription();
     }
 }

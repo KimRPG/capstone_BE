@@ -1,5 +1,6 @@
 package com.capstonexjapan.line_backend.shop.product.controller.request;
 
+import com.capstonexjapan.line_backend.shop.product.entity.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ public class UpdateProduct  {
     private String name;
     private String imageUrl;
     private Integer price;
-    private boolean isSoldOut;
+    private ProductStatus status;
     private Integer amount;
     private String description;
 }

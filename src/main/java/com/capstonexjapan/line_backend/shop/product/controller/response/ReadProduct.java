@@ -1,6 +1,7 @@
 package com.capstonexjapan.line_backend.shop.product.controller.response;
 
 import com.capstonexjapan.line_backend.shop.product.entity.Product;
+import com.capstonexjapan.line_backend.shop.product.entity.ProductStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class ReadProduct {
     private String name;
     private String image;
     private Integer price;
-    private boolean isSoldOut;
+    private ProductStatus status;
     private Integer amount;
     private String description;
     private Date createdAt;
@@ -29,7 +30,7 @@ public class ReadProduct {
                 .name(entity.getName())
                 .image(entity.getImageUrl())
                 .price(entity.getPrice())
-                .isSoldOut(entity.isSoldOut())
+                .status(entity.getStatus())
                 .amount(entity.getAmount())
                 .description(entity.getDescription())
                 .createdAt(entity.getCreatedAt())

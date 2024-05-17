@@ -31,5 +31,5 @@ public class UserEntity {
     private Date createdAt;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<AddressEntity> addresses;
+    private List<Address> addresses;
 }
