@@ -1,4 +1,4 @@
-package com.capstonexjapan.line_backend.shop.service;
+package com.capstonexjapan.line_backend.shop.product.service;
 
 import com.capstonexjapan.line_backend.shop.product.controller.request.CreateProduct;
 import com.capstonexjapan.line_backend.shop.product.controller.request.UpdateProduct;
