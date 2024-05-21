@@ -2,6 +2,7 @@ package com.capstonexjapan.line_backend.shop.product.controller.response;
 
 import com.capstonexjapan.line_backend.shop.product.entity.Product;
 import com.capstonexjapan.line_backend.shop.product.entity.ProductStatus;
+import com.capstonexjapan.line_backend.shop.store.entity.Store;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +25,9 @@ public class ReadProduct {
     private Date createdAt;
     private Date updatedAt;
 
-    public ReadProduct toDTO(Product entity) {
+    private String brand;
+
+    public ReadProduct toDTO(Product entity, Store store) {
         return ReadProduct.builder()
                 .productId(entity.getProductId())
                 .name(entity.getName())
@@ -35,6 +38,7 @@ public class ReadProduct {
                 .description(entity.getDescription())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
+                .brand(store.getBrand())
                 .build();
     }
 }

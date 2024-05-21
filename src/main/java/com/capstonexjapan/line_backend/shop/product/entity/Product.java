@@ -2,6 +2,7 @@ package com.capstonexjapan.line_backend.shop.product.entity;
 
 import com.capstonexjapan.line_backend.shop.product.controller.request.CreateProduct;
 import com.capstonexjapan.line_backend.shop.product.controller.request.UpdateProduct;
+import com.capstonexjapan.line_backend.shop.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,9 +40,9 @@ public class Product {
     @UpdateTimestamp
     private Date updatedAt;
 
-
-//    @ManyToOne
-//    private Store store;
+    @ManyToOne
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @PrePersist
     protected void onCreate() {
@@ -53,13 +54,14 @@ public class Product {
         }
     }
 
-    public Product toEntity(CreateProduct dto) {
+    public Product toEntity(CreateProduct dto, Store store) {
         return Product.builder()
                 .name(dto.getName())
                 .imageUrl(dto.getImageUrl())
                 .price(dto.getPrice())
                 .amount(dto.getAmount())
                 .description(dto.getDescription())
+                .store(store)
                 .build();
     }
 

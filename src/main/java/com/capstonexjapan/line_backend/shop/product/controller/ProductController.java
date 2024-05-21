@@ -27,8 +27,6 @@ public class ProductController {
             return ResponseEntity.ok(productService.readProduct(id));
         }
         return ResponseEntity.ok(productService.readAllProduct());
-
-
     }
 
     @DeleteMapping("")

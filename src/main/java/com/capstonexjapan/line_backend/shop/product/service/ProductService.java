@@ -5,6 +5,7 @@ import com.capstonexjapan.line_backend.shop.product.controller.request.UpdatePro
 import com.capstonexjapan.line_backend.shop.product.controller.response.ReadProduct;
 import com.capstonexjapan.line_backend.shop.product.entity.Product;
 import com.capstonexjapan.line_backend.shop.product.repository.ProductRepo;
+import com.capstonexjapan.line_backend.shop.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,15 +17,17 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
     private final ProductRepo productRepo;
+    private final StoreService storeService;
 
     public void addProduct(CreateProduct dto) {
-        productRepo.save(new Product().toEntity(dto));
+        productRepo.save(new Product().toEntity(dto,
+                storeService.findById(dto.getStoreId())));
     }
 
     public List<ReadProduct> readAllProduct() {
         return findAllProduct()
                 .stream()
-                .map(entity -> new ReadProduct().toDTO(entity))
+                .map(entity -> new ReadProduct().toDTO(entity, entity.getStore()))
                 .collect(Collectors.toList());
     }
 
@@ -33,7 +36,9 @@ public class ProductService {
     }
 
     public ReadProduct readProduct(Long id) {
-        return new ReadProduct().toDTO(findById(id));
+        Product product =findById(id);
+        return new ReadProduct().toDTO(product,
+                storeService.findById(product.getProductId()));
     }
 
     public Product findById(Long id) {

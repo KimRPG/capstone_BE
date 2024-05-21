@@ -15,4 +15,6 @@ public class CreateProduct {
     private Integer price;
     private Integer amount;
     private String description;
+
+    private Long storeId;
 }
