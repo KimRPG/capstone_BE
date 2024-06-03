@@ -17,4 +17,5 @@ public class CreateProduct {
     private String description;
 
     private Long storeId;
+    private String brand;
 }

@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class CreateStore {
 
     private String name;
-    private String brand;
     private String storeNumber;
 }

@@ -22,13 +22,11 @@ public class Store {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long storeId;
     private String name;
-    private String brand;
     private String storeNumber;
 
     public Store toEntity(CreateStore dto) {
         return Store.builder()
                 .name(dto.getName())
-                .brand(dto.getBrand())
                 .storeNumber(dto.getStoreNumber())
                 .build();
     }

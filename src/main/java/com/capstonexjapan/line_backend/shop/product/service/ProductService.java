@@ -20,14 +20,13 @@ public class ProductService {
     private final StoreService storeService;
 
     public void addProduct(CreateProduct dto) {
-        productRepo.save(new Product().toEntity(dto,
-                storeService.findById(dto.getStoreId())));
+        productRepo.save(new Product().toEntity(dto));
     }
 
     public List<ReadProduct> readAllProduct() {
         return findAllProduct()
                 .stream()
-                .map(entity -> new ReadProduct().toDTO(entity, entity.getStore()))
+                .map(entity -> new ReadProduct().toDTO(entity))
                 .collect(Collectors.toList());
     }
 
@@ -37,8 +36,7 @@ public class ProductService {
 
     public ReadProduct readProduct(Long id) {
         Product product =findById(id);
-        return new ReadProduct().toDTO(product,
-                storeService.findById(product.getProductId()));
+        return new ReadProduct().toDTO(product);
     }
 
     public Product findById(Long id) {

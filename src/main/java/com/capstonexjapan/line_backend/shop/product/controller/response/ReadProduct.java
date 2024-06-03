@@ -27,7 +27,7 @@ public class ReadProduct {
 
     private String brand;
 
-    public ReadProduct toDTO(Product entity, Store store) {
+    public ReadProduct toDTO(Product entity) {
         return ReadProduct.builder()
                 .productId(entity.getProductId())
                 .name(entity.getName())
@@ -38,7 +38,7 @@ public class ReadProduct {
                 .description(entity.getDescription())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
-                .brand(store.getBrand())
+                .brand(entity.getBrand())
                 .build();
     }
 }

@@ -35,6 +35,8 @@ public class Product {
 
     private Integer amount;
     private String description;
+
+    private String brand;
     @CreationTimestamp
     private Date createdAt;
     @UpdateTimestamp
@@ -54,14 +56,13 @@ public class Product {
         }
     }
 
-    public Product toEntity(CreateProduct dto, Store store) {
+    public Product toEntity(CreateProduct dto) {
         return Product.builder()
                 .name(dto.getName())
                 .imageUrl(dto.getImageUrl())
                 .price(dto.getPrice())
                 .amount(dto.getAmount())
                 .description(dto.getDescription())
-                .store(store)
                 .build();
     }
 
@@ -72,5 +73,6 @@ public class Product {
         if (Objects.nonNull(dto.getStatus())) this.status = dto.getStatus();
         if (Objects.nonNull(dto.getAmount())) this.amount = dto.getAmount();
         if (StringUtils.isNotBlank(dto.getDescription())) this.description = dto.getDescription();
+        if (StringUtils.isNotBlank(dto.getBrand())) this.brand = dto.getBrand();
     }
 }
