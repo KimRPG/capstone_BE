@@ -5,6 +5,7 @@ import com.capstonexjapan.line_backend.shop.product.controller.request.UpdatePro
 import com.capstonexjapan.line_backend.shop.product.controller.response.ReadProduct;
 import com.capstonexjapan.line_backend.shop.product.entity.Product;
 import com.capstonexjapan.line_backend.shop.product.repository.ProductRepo;
+import com.capstonexjapan.line_backend.shop.store.entity.Store;
 import com.capstonexjapan.line_backend.shop.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,8 @@ public class ProductService {
     private final StoreService storeService;
 
     public void addProduct(CreateProduct dto) {
-        productRepo.save(new Product().toEntity(dto));
+        Store store = storeService.findById(dto.getStoreId());
+        productRepo.save(new Product().toEntity(dto, store));
     }
 
     public List<ReadProduct> readAllProduct() {

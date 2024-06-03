@@ -56,13 +56,15 @@ public class Product {
         }
     }
 
-    public Product toEntity(CreateProduct dto) {
+    public Product toEntity(CreateProduct dto,Store store) {
         return Product.builder()
                 .name(dto.getName())
                 .imageUrl(dto.getImageUrl())
                 .price(dto.getPrice())
                 .amount(dto.getAmount())
                 .description(dto.getDescription())
+                .brand(dto.getBrand())
+                .store(store)
                 .build();
     }
 
