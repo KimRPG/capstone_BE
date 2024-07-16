@@ -56,10 +56,10 @@ public class Product {
         }
     }
 
-    public Product toEntity(CreateProduct dto,Store store) {
+    public Product toEntity(CreateProduct dto,Store store, String imageUrl) {
         return Product.builder()
                 .name(dto.getName())
-                .imageUrl(dto.getImageUrl())
+                .imageUrl(imageUrl)
                 .price(dto.getPrice())
                 .amount(dto.getAmount())
                 .description(dto.getDescription())

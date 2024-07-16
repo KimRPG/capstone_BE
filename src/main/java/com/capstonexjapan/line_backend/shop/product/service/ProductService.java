@@ -20,9 +20,9 @@ public class ProductService {
     private final ProductRepo productRepo;
     private final StoreService storeService;
 
-    public void addProduct(CreateProduct dto) {
+    public void addProduct(CreateProduct dto, String filename) {
         Store store = storeService.findById(dto.getStoreId());
-        productRepo.save(new Product().toEntity(dto, store));
+        productRepo.save(new Product().toEntity(dto, store, filename));
     }
 
     public List<ReadProduct> readAllProduct() {

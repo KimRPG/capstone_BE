@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CreateProduct {
     private String name;
-    private String imageUrl;
     private Integer price;
     private Integer amount;
     private String description;
