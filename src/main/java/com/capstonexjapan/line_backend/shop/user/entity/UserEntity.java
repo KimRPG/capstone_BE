@@ -1,5 +1,6 @@
 package com.capstonexjapan.line_backend.shop.user.entity;
 
+import com.capstonexjapan.line_backend.shop.user.controller.request.CreateUserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +33,12 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Address> addresses;
+
+    public UserEntity toEntity(CreateUserDTO dto) {
+        return UserEntity.builder()
+                .userEmail(dto.getUserEmail())
+                .name(dto.getName())
+                .phoneNumber(dto.getPhoneNumber())
+                .build();
+    }
 }
