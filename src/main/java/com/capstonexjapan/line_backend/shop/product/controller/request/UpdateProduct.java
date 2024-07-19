@@ -16,6 +16,7 @@ public class UpdateProduct  {
     private Integer price;
     private ProductStatus status;
     private Integer amount;
+    private Integer discount;
     private String description;
     private String brand;
 

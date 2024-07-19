@@ -37,6 +37,9 @@ public class Product {
     private String description;
 
     private String brand;
+
+    private Integer discount;
+
     @CreationTimestamp
     private Date createdAt;
     @UpdateTimestamp
@@ -64,6 +67,7 @@ public class Product {
                 .amount(dto.getAmount())
                 .description(dto.getDescription())
                 .brand(dto.getBrand())
+                .discount(dto.getDiscount())
                 .store(store)
                 .build();
     }
@@ -74,6 +78,7 @@ public class Product {
         if (Objects.nonNull(dto.getPrice())) this.price = dto.getPrice();
         if (Objects.nonNull(dto.getStatus())) this.status = dto.getStatus();
         if (Objects.nonNull(dto.getAmount())) this.amount = dto.getAmount();
+        if (Objects.nonNull(dto.getDiscount())) this.discount = dto.getDiscount();
         if (StringUtils.isNotBlank(dto.getDescription())) this.description = dto.getDescription();
         if (StringUtils.isNotBlank(dto.getBrand())) this.brand = dto.getBrand();
     }
