@@ -54,5 +54,10 @@ public class ProductService {
         productRepo.deleteById(id);
     }
 
+    @Transactional
+    public void orderProduct(Product product,Integer amount) {
+        product.orderProduct(amount);
+    }
+
 
 }

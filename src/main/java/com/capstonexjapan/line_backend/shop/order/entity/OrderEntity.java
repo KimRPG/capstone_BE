@@ -1,5 +1,6 @@
 package com.capstonexjapan.line_backend.shop.order.entity;
 
+import com.capstonexjapan.line_backend.shop.order.controller.request.OrderRequestDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +18,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
@@ -36,4 +37,16 @@ public class Order {
 
     @CreationTimestamp
     private Date createTime;
+
+    public OrderEntity toEntity( OrderRequestDTO dto) {
+        return OrderEntity.builder()
+                .currency(dto.getCurrency())
+                .quantity(dto.getQuantity())
+                .request(dto.getRequest())
+                .orderStatus("주문 확인 중")
+                .paymentMethod(dto.getPaymentMethod())
+                .productId(dto.getProductId())
+                .build();
+    }
+
 }

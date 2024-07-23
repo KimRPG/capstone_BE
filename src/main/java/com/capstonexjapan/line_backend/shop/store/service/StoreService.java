@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -27,9 +28,11 @@ public class StoreService {
         return storeRepo.findById(id).orElseThrow();
     }
 
-//    public List<ReadStore> readAllStore() {
-//        return
-//    }
-
+    public List<ReadStore> readAllStore() {
+        return storeRepo.findAll()
+                .stream()
+                .map(store -> new ReadStore().toDTO(store))
+                .collect(Collectors.toList());
+    }
 
 }

@@ -22,9 +22,9 @@ public class StoreController {
 
     @GetMapping("")
     public ResponseEntity<?> readProducts(@RequestParam(required = false) Long id) {
-//        if (Objects.nonNull(id)) {
+        if (Objects.nonNull(id)) {
             return ResponseEntity.ok(storeService.readStore(id));
-//        }
-//        return ResponseEntity.ok(storeService.readStore());
+        }
+        return ResponseEntity.ok(storeService.readAllStore());
     }
 }

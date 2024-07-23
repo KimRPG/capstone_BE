@@ -49,15 +49,7 @@ public class Product {
     @JoinColumn(name = "store_id")
     private Store store;
 
-    @PrePersist
-    protected void onCreate() {
-        if (this.imageUrl == null) {
-            this.imageUrl = "기본이미지";
-        }
-        if (this.status == null) {
-            this.status = ProductStatus.AVAILABLE;
-        }
-    }
+
 
     public Product toEntity(CreateProduct dto,Store store, String imageUrl) {
         return Product.builder()
@@ -81,5 +73,9 @@ public class Product {
         if (Objects.nonNull(dto.getDiscount())) this.discount = dto.getDiscount();
         if (StringUtils.isNotBlank(dto.getDescription())) this.description = dto.getDescription();
         if (StringUtils.isNotBlank(dto.getBrand())) this.brand = dto.getBrand();
+    }
+
+    public void orderProduct(Integer amount) {
+        this.amount -= amount;
     }
 }
