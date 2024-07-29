@@ -23,7 +23,7 @@ public class GetAddressDTO {
     public static GetAddressDTO toDTO(Address address) {
         return GetAddressDTO.builder()
                 .receiverName(address.getReceiverName())
-                .receiverPhoneNumber(address.getAddress())
+                .receiverPhoneNumber(address.getReceiverPhoneNumber())
                 .address(address.getAddress())
                 .postalCode(address.getPostalCode())
                 .country(address.getCountry())
