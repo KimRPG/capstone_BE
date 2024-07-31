@@ -15,4 +15,7 @@ public class OrderRequestDTO {
     private String request;
     private String paymentMethod;
     private Long productId;
+    private Long userId;
+    private Integer deliveryPrice;
+    private Long storeId;
 }

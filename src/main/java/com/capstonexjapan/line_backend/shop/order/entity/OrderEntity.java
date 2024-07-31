@@ -29,7 +29,7 @@ public class OrderEntity {
 
     private String request;
 
-    private String orderStatus;
+    private String orderStatus; //enum
 
     private String paymentMethod;
 
@@ -37,6 +37,12 @@ public class OrderEntity {
 
     @CreationTimestamp
     private Date createTime;
+
+    private Long userId;
+
+    private Integer deliveryPrice;
+
+    private Long storeId;
 
     public OrderEntity toEntity( OrderRequestDTO dto) {
         return OrderEntity.builder()
@@ -46,7 +52,9 @@ public class OrderEntity {
                 .orderStatus("주문 확인 중")
                 .paymentMethod(dto.getPaymentMethod())
                 .productId(dto.getProductId())
+                .userId(dto.getUserId())
+                .deliveryPrice(dto.getDeliveryPrice())
+                .storeId(dto.getStoreId())
                 .build();
     }
-
 }

@@ -3,6 +3,7 @@ package com.capstonexjapan.line_backend.shop.order.service;
 import com.capstonexjapan.line_backend.shop.order.controller.request.OrderRequestDTO;
 import com.capstonexjapan.line_backend.shop.order.controller.response.OrderResponseDTO;
 import com.capstonexjapan.line_backend.shop.order.entity.OrderEntity;
+import com.capstonexjapan.line_backend.shop.order.entity.OrderLog;
 import com.capstonexjapan.line_backend.shop.order.repo.OrderRepository;
 import com.capstonexjapan.line_backend.shop.product.entity.Product;
 import com.capstonexjapan.line_backend.shop.product.repository.ProductRepo;
@@ -19,13 +20,16 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductService productService;
+    private final OrderLogService orderLogService;
 
 
     @Transactional
     public void orderProduct(OrderRequestDTO dto) {
         Product product = productService.findById(dto.getProductId());
         productService.orderProduct(product, dto.getQuantity());
-        orderRepository.save(new OrderEntity().toEntity(dto));
+        OrderEntity order = new OrderEntity().toEntity(dto);
+        orderRepository.save(order);
+        orderLogService.orderLog(dto, order);
     }
 
     public List<OrderResponseDTO> getOrders() {
