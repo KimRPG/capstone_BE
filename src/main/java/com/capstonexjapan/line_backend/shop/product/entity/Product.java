@@ -31,7 +31,7 @@ public class Product {
     private Integer price;
 
     @Enumerated(EnumType.STRING)
-    private ProductStatus status;
+    private ProductStatus status = ProductStatus.AVAILABLE;
 
     private Integer amount;
     private String description;
@@ -60,6 +60,7 @@ public class Product {
                 .description(dto.getDescription())
                 .brand(dto.getBrand())
                 .discount(dto.getDiscount())
+                .status(ProductStatus.AVAILABLE)
                 .store(store)
                 .build();
     }
