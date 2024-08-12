@@ -1,8 +1,7 @@
 package com.capstonexjapan.line_backend.shop.order.service;
 
 import com.capstonexjapan.line_backend.shop.order.controller.request.OrderRequestDTO;
-import com.capstonexjapan.line_backend.shop.order.entity.OrderEntity;
-import com.capstonexjapan.line_backend.shop.order.entity.OrderLog;
+import com.capstonexjapan.line_backend.shop.order.entity.OrderData;
 import com.capstonexjapan.line_backend.shop.order.repo.OrderLogRepository;
 import com.capstonexjapan.line_backend.shop.product.entity.Product;
 import com.capstonexjapan.line_backend.shop.product.repository.ProductRepo;
@@ -23,11 +22,11 @@ public class OrderLogService {
     private final StoreRepo storeRepo;
 
     @Transactional
-    public void orderLog(OrderRequestDTO dto, OrderEntity order) {
+    public void orderLog(OrderRequestDTO dto) {
         UserEntity user = userRepository.findById(dto.getUserId()).orElseThrow();
         Product product = productRepo.findById(dto.getProductId()).orElseThrow();
         Store store = storeRepo.findById(dto.getStoreId()).orElseThrow();
-        OrderLog orderLog = new OrderLog().toEntity(order,product,user,store);
+        OrderData orderLog = new OrderData().toEntity(dto,product,user,store, dto.getAddressDTO());
 
         orderLogRepository.save(orderLog);
     }

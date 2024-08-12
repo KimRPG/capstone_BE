@@ -4,6 +4,7 @@ import com.capstonexjapan.line_backend.shop.order.controller.request.OrderReques
 import com.capstonexjapan.line_backend.shop.product.entity.Product;
 import com.capstonexjapan.line_backend.shop.product.entity.ProductStatus;
 import com.capstonexjapan.line_backend.shop.store.entity.Store;
+import com.capstonexjapan.line_backend.shop.user.controller.request.AddressDTO;
 import com.capstonexjapan.line_backend.shop.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
@@ -20,7 +20,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderLog {
+public class OrderData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderDetailId;
@@ -29,6 +29,8 @@ public class OrderLog {
     private String request;
     private String orderStatus; //enum
     private String paymentMethod;
+    @CreationTimestamp
+    private Date createOrderTime;
 
     private Long productId;
     private String productName;
@@ -43,7 +45,6 @@ public class OrderLog {
     private Date productCreatedAt;
     private Date productUpdatedAt;
 
-    private Date createOrderTime;
 
     private Long userId;
     private String userEmail;
@@ -56,8 +57,16 @@ public class OrderLog {
     private String storeName;
     private String storeNumber;
 
-    public OrderLog toEntity(OrderEntity order, Product product, UserEntity user, Store store) {
-        return OrderLog.builder()
+    private String receiverName;
+    private String receiverPhoneNumber;
+    private String address;
+    private String postalCode;
+    private String country;
+
+
+
+    public OrderData toEntity(OrderRequestDTO order, Product product, UserEntity user, Store store, AddressDTO address) {
+        return OrderData.builder()
                 .currency(order.getCurrency())
                 .quantity(order.getQuantity())
                 .request(order.getRequest())
@@ -74,7 +83,6 @@ public class OrderLog {
                 .productDiscount(product.getDiscount())
                 .productCreatedAt(product.getCreatedAt())
                 .productUpdatedAt(product.getUpdatedAt())
-                .createOrderTime(order.getCreateTime())
                 .userId(user.getUserId())
                 .userEmail(user.getUserEmail())
                 .userName(user.getName())
@@ -83,6 +91,11 @@ public class OrderLog {
                 .storeId(store.getStoreId())
                 .storeName(store.getName())
                 .storeNumber(store.getStoreNumber())
+                .receiverName(address.getReceiverName())
+                .receiverPhoneNumber(address.getReceiverPhoneNumber())
+                .address(address.getAddress())
+                .postalCode(address.getPostalCode())
+                .country(address.getCountry())
                 .build();
     }
 

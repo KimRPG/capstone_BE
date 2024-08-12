@@ -3,10 +3,8 @@ package com.capstonexjapan.line_backend.shop.order.service;
 import com.capstonexjapan.line_backend.shop.order.controller.request.OrderRequestDTO;
 import com.capstonexjapan.line_backend.shop.order.controller.response.OrderResponseDTO;
 import com.capstonexjapan.line_backend.shop.order.entity.OrderEntity;
-import com.capstonexjapan.line_backend.shop.order.entity.OrderLog;
 import com.capstonexjapan.line_backend.shop.order.repo.OrderRepository;
 import com.capstonexjapan.line_backend.shop.product.entity.Product;
-import com.capstonexjapan.line_backend.shop.product.repository.ProductRepo;
 import com.capstonexjapan.line_backend.shop.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +27,6 @@ public class OrderService {
         productService.orderProduct(product, dto.getQuantity());
         OrderEntity order = new OrderEntity().toEntity(dto);
         orderRepository.save(order);
-        orderLogService.orderLog(dto, order);
     }
 
     public List<OrderResponseDTO> getOrders() {
