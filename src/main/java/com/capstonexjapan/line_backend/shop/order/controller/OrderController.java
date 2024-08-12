@@ -24,4 +24,10 @@ public class OrderController {
     public List<OrderResponseDTO> getOrders() {
         return orderService.getOrders();
     }
+
+    @DeleteMapping("")
+    public String deleteOrder(@RequestParam Long id) {
+        orderService.deleteById(id);
+        return "삭제됨";
+    }
 }
