@@ -41,5 +41,9 @@ public class UserController {
         return userService.getAddress(userId);
     }
 
-
+    @DeleteMapping("")
+    public String deleteUser(@RequestParam Long id) {
+        userService.deleteById(id);
+        return "삭제됨";
+    }
 }

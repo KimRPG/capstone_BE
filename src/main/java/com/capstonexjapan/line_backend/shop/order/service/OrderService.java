@@ -34,4 +34,8 @@ public class OrderService {
                 .stream().map(order -> new OrderResponseDTO().toDTO(order))
                 .collect(Collectors.toList());
     }
+
+    public void deleteById(Long id) {
+        orderRepository.deleteById(id);
+    }
 }
