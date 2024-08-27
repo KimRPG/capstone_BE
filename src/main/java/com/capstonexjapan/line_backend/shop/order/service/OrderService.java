@@ -35,6 +35,9 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public OrderResponseDTO getOrderById(Long id) {
+        return new OrderResponseDTO().toDTO(orderRepository.findById(id).orElseThrow());
+    }
     public void deleteById(Long id) {
         orderRepository.deleteById(id);
     }

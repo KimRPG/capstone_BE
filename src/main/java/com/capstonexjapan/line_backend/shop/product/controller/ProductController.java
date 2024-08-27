@@ -1,5 +1,6 @@
 package com.capstonexjapan.line_backend.shop.product.controller;
 
+import com.capstonexjapan.line_backend.ftp.FtpServer;
 import com.capstonexjapan.line_backend.shop.product.controller.request.CreateProduct;
 import com.capstonexjapan.line_backend.shop.product.controller.request.UpdateProduct;
 import com.capstonexjapan.line_backend.shop.product.service.ProductService;
@@ -18,6 +19,7 @@ import java.util.Objects;
 public class ProductController {
     private final ProductService productService;
     private final S3Service s3Service;
+    private final FtpServer ftpServer;
 
     @PostMapping("")
     public String createProduct(@RequestPart CreateProduct dto,
@@ -25,6 +27,11 @@ public class ProductController {
         String fileName = s3Service.uploadFile(file);
         productService.addProduct(dto, fileName);
         return "추가됨";
+    }
+
+    @PostMapping("/practice")
+    public void hi(@RequestPart(required = false)MultipartFile file) throws IOException {
+        ftpServer.upload(file);
     }
 
     @GetMapping("")

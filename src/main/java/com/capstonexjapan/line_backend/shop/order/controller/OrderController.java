@@ -4,9 +4,11 @@ import com.capstonexjapan.line_backend.shop.order.controller.request.OrderReques
 import com.capstonexjapan.line_backend.shop.order.controller.response.OrderResponseDTO;
 import com.capstonexjapan.line_backend.shop.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +23,12 @@ public class OrderController {
     }
 
     @GetMapping()
-    public List<OrderResponseDTO> getOrders() {
-        return orderService.getOrders();
+    public ResponseEntity<?> getOrders(@RequestParam(required = false) Long id) {
+        if (Objects.nonNull(id)) {
+            return ResponseEntity.ok(orderService.getOrderById(id));
+        }
+
+        return ResponseEntity.ok(orderService.getOrders());
     }
 
     @DeleteMapping("")
