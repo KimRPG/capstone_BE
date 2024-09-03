@@ -36,10 +36,4 @@ public class OrderController {
         orderService.deleteById(id);
         return "삭제됨";
     }
-
-    @DeleteMapping("")
-    public String deleteOrder(@RequestParam Long id) {
-        orderService.deleteById(id);
-        return "삭제됨";
-    }
 }
