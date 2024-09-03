@@ -1,6 +1,6 @@
 package com.capstonexjapan.line_backend.shop.user.controller;
 
-import com.capstonexjapan.line_backend.shop.user.controller.request.CreateAddressDTO;
+import com.capstonexjapan.line_backend.shop.user.controller.request.AddressDTO;
 import com.capstonexjapan.line_backend.shop.user.controller.request.CreateUserDTO;
 import com.capstonexjapan.line_backend.shop.user.controller.response.GetAddressDTO;
 import com.capstonexjapan.line_backend.shop.user.service.UserService;
@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @PostMapping("/address")
-    public String userAddressAdd(@RequestBody CreateAddressDTO dto) {
-        userService.createAddress(dto);
+    public String userAddressAdd(@RequestBody AddressDTO dto, @RequestParam Long userId) {
+        userService.createAddress(dto, userId);
         return "유저에 address 정보 추가";
     }
 

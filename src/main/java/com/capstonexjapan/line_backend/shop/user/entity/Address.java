@@ -1,7 +1,6 @@
 package com.capstonexjapan.line_backend.shop.user.entity;
 
-import com.capstonexjapan.line_backend.shop.user.controller.request.CreateAddressDTO;
-import com.capstonexjapan.line_backend.shop.user.controller.request.CreateUserDTO;
+import com.capstonexjapan.line_backend.shop.user.controller.request.AddressDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,7 +39,7 @@ public class Address {
     @JsonIgnore
     private UserEntity user;
 
-    public Address toEntity(CreateAddressDTO dto, UserEntity user) {
+    public Address toEntity(AddressDTO dto, UserEntity user) {
         return Address.builder()
                 .user(user)
                 .receiverName(dto.getReceiverName())

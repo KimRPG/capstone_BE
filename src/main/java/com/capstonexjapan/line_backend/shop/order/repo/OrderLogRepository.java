@@ -1,8 +1,8 @@
 package com.capstonexjapan.line_backend.shop.order.repo;
 
-import com.capstonexjapan.line_backend.shop.order.entity.OrderLog;
+import com.capstonexjapan.line_backend.shop.order.entity.OrderData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderLogRepository extends JpaRepository<OrderLog, Long> {
+public interface OrderLogRepository extends JpaRepository<OrderData, Long> {
 
 }

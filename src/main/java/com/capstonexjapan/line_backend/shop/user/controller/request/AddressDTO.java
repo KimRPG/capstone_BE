@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @AllArgsConstructor
-public class CreateAddressDTO {
-    private Long userId;
+public class AddressDTO {
     private String receiverName;
     private String receiverPhoneNumber;
     private String address;
