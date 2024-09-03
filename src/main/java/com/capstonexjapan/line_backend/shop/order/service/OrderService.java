@@ -34,7 +34,6 @@ public class OrderService {
                 .stream().map(order -> new OrderResponseDTO().toDTO(order))
                 .collect(Collectors.toList());
     }
-
     public OrderResponseDTO getOrderById(Long id) {
         return new OrderResponseDTO().toDTO(orderRepository.findById(id).orElseThrow());
     }
