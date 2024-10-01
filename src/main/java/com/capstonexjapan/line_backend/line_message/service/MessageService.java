@@ -2,7 +2,6 @@ package com.capstonexjapan.line_backend.line_message.service;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.PushMessage;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,7 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 @Service
 public class MessageService {
+
     private final LineMessagingClient lineMessagingClient;
     private final MessageCreator messageCreator;
 
@@ -21,6 +21,16 @@ public class MessageService {
 
     public Mono<Void> publishText2Message(String question, String message) {
         return publishMessage(messageCreator.createText2Message(question, message));
+    }
+
+    // 봄 컬렉션 텍스트 메시지 전송
+    public Mono<Void> publishProductCollectionTextMessage() {
+        return publishMessage(messageCreator.createSpringCollectionTextMessage());
+    }
+
+    // 상품 카드 메시지 전송
+    public Mono<Void> publishProductCardMessage() {
+        return publishMessage(messageCreator.createProductCardMessage());
     }
 
     private Mono<Void> publishMessage(Mono<PushMessage> pushMessageMono) {

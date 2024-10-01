@@ -1,6 +1,7 @@
 package com.capstonexjapan.line_backend.shop.order.service;
 
 import com.capstonexjapan.line_backend.shop.order.controller.request.OrderRequestDTO;
+import com.capstonexjapan.line_backend.shop.order.controller.request.UpdateOrderDTO;
 import com.capstonexjapan.line_backend.shop.order.controller.response.OrderResponseDTO;
 import com.capstonexjapan.line_backend.shop.order.entity.OrderEntity;
 import com.capstonexjapan.line_backend.shop.order.repo.OrderRepository;
@@ -37,6 +38,16 @@ public class OrderService {
     public OrderResponseDTO getOrderById(Long id) {
         return new OrderResponseDTO().toDTO(orderRepository.findById(id).orElseThrow());
     }
+
+    @Transactional
+    public void updateById(Long id, UpdateOrderDTO dto) {
+        OrderEntity order = orderRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다."));
+
+        order.updateOrder(dto);
+        orderRepository.save(order);
+    }
+
     public void deleteById(Long id) {
         orderRepository.deleteById(id);
     }
