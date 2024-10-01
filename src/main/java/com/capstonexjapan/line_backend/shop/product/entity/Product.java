@@ -65,6 +65,19 @@ public class Product {
                 .build();
     }
 
+    public Product toEntity(CreateProduct dto,Store store) {
+        return Product.builder()
+                .name(dto.getName())
+                .price(dto.getPrice())
+                .amount(dto.getAmount())
+                .description(dto.getDescription())
+                .brand(dto.getBrand())
+                .discount(dto.getDiscount())
+                .status(ProductStatus.AVAILABLE)
+                .store(store)
+                .build();
+    }
+
     public void update(UpdateProduct dto) {
         if (StringUtils.isNotBlank(dto.getName())) this.name = dto.getName();
         if (StringUtils.isNotBlank(dto.getImageUrl())) this.imageUrl = dto.getImageUrl();

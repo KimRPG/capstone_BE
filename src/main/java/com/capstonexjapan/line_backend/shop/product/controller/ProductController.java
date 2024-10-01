@@ -25,10 +25,14 @@ public class ProductController {
     @PostMapping("")
     public String createProduct(@RequestPart CreateProduct dto,
                                 @RequestPart(required = false) MultipartFile file)throws IOException {
-        MultipartFile convertedFile = FileConvert.fileToMultipartFileConvert(
-                FileConvert.multipartFileToFileConvert(file, "src/main/resources/tmp/"));
-        String fileName = productService.uploadFile(convertedFile);
-        productService.addProduct(dto, "https://capstone.thewc.co.jp/A/"+fileName);
+        if (file !=null && !file.isEmpty()) {
+            MultipartFile convertedFile = FileConvert.fileToMultipartFileConvert(
+                    FileConvert.multipartFileToFileConvert(file, "src/main/resources/tmp/"));
+            String fileName = productService.uploadFile(convertedFile);
+            productService.addProduct(dto, "https://capstone.thewc.co.jp/A/"+fileName);
+            return "파일 과 같이 추가됨";
+        }
+        productService.addProduct(dto);
         return "추가됨";
     }
 

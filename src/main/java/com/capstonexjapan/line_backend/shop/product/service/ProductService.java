@@ -30,6 +30,11 @@ public class ProductService {
         productRepo.save(new Product().toEntity(dto, store, filename));
     }
 
+    public void addProduct(CreateProduct dto) {
+        Store store = storeService.findById(dto.getStoreId());
+        productRepo.save(new Product().toEntity(dto,store));
+    }
+
     public List<ReadProduct> readAllProduct() {
         return findAllProduct()
                 .stream()
