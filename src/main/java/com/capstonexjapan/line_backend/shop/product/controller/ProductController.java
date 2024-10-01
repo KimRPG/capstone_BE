@@ -19,8 +19,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-    private final S3Service s3Service;
-    private final FtpServer ftpServer;
+//    private final S3Service s3Service;
+//    private final FtpServer ftpServer;
 
     @PostMapping("")
     public String createProduct(@RequestPart CreateProduct dto,
