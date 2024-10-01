@@ -1,5 +1,6 @@
 package com.capstonexjapan.line_backend.shop.product.service;
 
+import com.capstonexjapan.line_backend.ftp.FtpServer;
 import com.capstonexjapan.line_backend.shop.product.controller.request.CreateProduct;
 import com.capstonexjapan.line_backend.shop.product.controller.request.UpdateProduct;
 import com.capstonexjapan.line_backend.shop.product.controller.response.ReadProduct;
@@ -10,8 +11,11 @@ import com.capstonexjapan.line_backend.shop.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepo productRepo;
     private final StoreService storeService;
+    private final FtpServer ftpServer;
 
     public void addProduct(CreateProduct dto, String filename) {
         Store store = storeService.findById(dto.getStoreId());
@@ -59,5 +64,10 @@ public class ProductService {
         product.orderProduct(amount);
     }
 
+    public String uploadFile(MultipartFile file) throws IOException {
+        UUID uuid = UUID.randomUUID();
+        ftpServer.upload(file, uuid);
+        return uuid+file.getOriginalFilename();
+    }
 
 }

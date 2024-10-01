@@ -27,9 +27,13 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     implementation 'commons-net:commons-net:3.9.0'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
     implementation 'com.linecorp.bot:line-bot-api-client:2.1.0' // 라인 메시지
     implementation 'io.projectreactor:reactor-core:3.5.2' // or any latest version
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'commons-fileupload:commons-fileupload:1.4'
+    implementation 'commons-io:commons-io:2.11.0'
+
 }
 
 tasks.named('test') {

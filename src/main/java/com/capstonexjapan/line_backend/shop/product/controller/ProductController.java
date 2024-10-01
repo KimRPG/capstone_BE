@@ -1,5 +1,6 @@
 package com.capstonexjapan.line_backend.shop.product.controller;
 
+import com.capstonexjapan.line_backend.ftp.FileConvert;
 import com.capstonexjapan.line_backend.ftp.FtpServer;
 import com.capstonexjapan.line_backend.shop.product.controller.request.CreateProduct;
 import com.capstonexjapan.line_backend.shop.product.controller.request.UpdateProduct;
@@ -24,14 +25,22 @@ public class ProductController {
     @PostMapping("")
     public String createProduct(@RequestPart CreateProduct dto,
                                 @RequestPart(required = false) MultipartFile file)throws IOException {
-        String fileName = s3Service.uploadFile(file);
-        productService.addProduct(dto, fileName);
+        MultipartFile convertedFile = FileConvert.fileToMultipartFileConvert(
+                FileConvert.multipartFileToFileConvert(file, "src/main/resources/tmp/"));
+        String fileName = productService.uploadFile(convertedFile);
+        productService.addProduct(dto, "https://capstone.thewc.co.jp/A/"+fileName);
         return "추가됨";
     }
 
     @PostMapping("/practice")
-    public void hi(@RequestPart(required = false)MultipartFile file) throws IOException {
-        ftpServer.upload(file);
+    public String  hi(@RequestPart(required = false)MultipartFile file) throws IOException {
+        MultipartFile convertedFile = FileConvert.fileToMultipartFileConvert(
+                FileConvert.multipartFileToFileConvert(file, "src/main/resources/tmp/"));
+        String url = productService.uploadFile(convertedFile);
+
+        FileConvert.removeLocalFile("src/main/resources/tmp/" + file.getOriginalFilename());
+
+        return "https://capstone.thewc.co.jp/A/"+url;
     }
 
     @GetMapping("")
