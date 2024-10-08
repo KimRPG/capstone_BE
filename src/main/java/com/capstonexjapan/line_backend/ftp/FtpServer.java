@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
@@ -82,8 +83,10 @@ public class FtpServer {
             }
 
             try (InputStream inputStream = file.getInputStream()) {
-                String remoteFileName = uuid.toString() + "_" + file.getOriginalFilename();
-                boolean success = ftp.storeFile(remoteFileName, inputStream);
+                String remoteFileName = uuid.toString()+getFileExtension(file.getContentType());
+                ftp.setFileType(FTP.BINARY_FILE_TYPE);
+                byte[] fileData = file.getBytes();
+                boolean success = ftp.storeFile(remoteFileName, new ByteArrayInputStream(fileData));
                 if (!success) {
                     log.error("FTPClient:: file upload failed for file {}", remoteFileName);
                     throw new IOException("파일 업로드 실패: " + remoteFileName);
@@ -97,4 +100,32 @@ public class FtpServer {
             }
         }
     }
+
+    public String getFileExtension(String contentType) {
+        switch (contentType) {
+            case "image/png":
+                return ".png";
+            case "image/jpeg":
+                return ".jpg";
+            case "image/gif":
+                return ".gif";
+            case "application/pdf":
+                return ".pdf";
+            case "application/zip":
+                return ".zip";
+            case "application/vnd.ms-excel":
+                return ".xls";
+            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                return ".xlsx";
+            case "application/msword":
+                return ".doc";
+            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                return ".docx";
+            case "text/plain":
+                return ".txt";
+            default:
+                return null; // 지원하지 않는 형식
+        }
+    }
+
 }
