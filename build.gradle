@@ -34,6 +34,7 @@ dependencies {
     implementation 'commons-fileupload:commons-fileupload:1.4'
     implementation 'commons-io:commons-io:2.11.0'
 
+    implementation 'com.squareup:square:41.1.0.20240919'
 }
 
 tasks.named('test') {
