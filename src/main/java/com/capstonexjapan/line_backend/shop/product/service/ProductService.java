@@ -72,7 +72,7 @@ public class ProductService {
     public String uploadFile(MultipartFile file) throws IOException {
         UUID uuid = UUID.randomUUID();
         ftpServer.upload(file, uuid);
-        return uuid+file.getOriginalFilename();
+        return uuid+ftpServer.getFileExtension(file.getContentType());
     }
 
 }
