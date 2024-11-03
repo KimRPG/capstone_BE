@@ -29,6 +29,22 @@ public class Product {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    public Product(Long productId, String name, String imageUrl, Integer price, ProductStatus status, Integer amount, String description, String brand, Integer discount, Date createdAt, Date updatedAt, Store store) {
+        this.productId = productId;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.price = price;
+        this.status = status;
+        this.amount = amount;
+        this.description = description;
+        this.brand = brand;
+        this.discount = discount;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.store = store;
+    }
+
     private Integer price;
 
     @Enumerated(EnumType.STRING)
