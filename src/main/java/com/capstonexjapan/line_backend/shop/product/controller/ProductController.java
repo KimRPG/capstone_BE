@@ -17,7 +17,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
-public class ProductController {
+class ProductController {
     private final ProductService productService;
 //    private final S3Service s3Service;
 //    private final FtpServer ftpServer;
