@@ -2,31 +2,45 @@ package com.capstonexjapan.line_backend.line_message.controller;
 
 import com.capstonexjapan.line_backend.line_message.dto.MessageDTO;
 import com.capstonexjapan.line_backend.line_message.service.MessageService;
+import com.linecorp.bot.model.message.flex.component.Button;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
-@RequestMapping("/channel/line") // 여기서 경로를 '/channel/line'으로 설정
+@RequestMapping("/channel/line")
 @RequiredArgsConstructor
 public class MessageController {
 
     private final MessageService messageService;
 
-    // 텍스트 메시지 전송을 위한 엔드포인트
     @PostMapping("/text")
     public Mono<ResponseEntity<Void>> sendTextMessage(@RequestBody MessageDTO.TextMessageRequest request) {
-        return messageService.publishTextMessage(request.getMessage())
+        return messageService.publishTextMessage(request.getUserId(), request.getMessage())
                 .thenReturn(ResponseEntity.ok().build());
     }
 
-    // Flex 메시지 전송을 위한 엔드포인트
-    @PostMapping("/flex")
+    @PostMapping("/question")
     public Mono<ResponseEntity<Void>> sendFlexMessage(@RequestBody MessageDTO.FlexMessageRequest request) {
-        return messageService.publishText2Message(request.getQuestion(), request.getMessage())
+        // 버튼들을 request body에서 받아서 처리
+        MessageCreator messageCreator = new MessageCreator();
+        List<Button> buttons = request.getButtons().stream()
+                .map(messageCreator::createButtonFromRequest)
+                .collect(Collectors.toList());
+
+        return messageService.publishText2Message(request.getUserId(), request.getMessage(), request.getQuestion(), buttons)
                 .thenReturn(ResponseEntity.ok().build());
     }
 
-    // 요청 객체 정의
+
+
+    @PostMapping("/product-card")
+    public Mono<ResponseEntity<Void>> sendProductCardMessage(@RequestBody MessageDTO.ProductCardsRequest request) {
+        return messageService.publishProductCardMessage(request.getUserId(), request.getProductCards())
+                .thenReturn(ResponseEntity.ok().build());
+    }
 }

@@ -1,6 +1,7 @@
 package com.capstonexjapan.line_backend.shop.order.controller;
 
 import com.capstonexjapan.line_backend.shop.order.controller.request.OrderRequestDTO;
+import com.capstonexjapan.line_backend.shop.order.controller.request.UpdateOrderDTO;
 import com.capstonexjapan.line_backend.shop.order.controller.response.OrderResponseDTO;
 import com.capstonexjapan.line_backend.shop.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,12 @@ public class OrderController {
         }
 
         return ResponseEntity.ok(orderService.getOrders());
+    }
+
+    @PatchMapping("")
+    public String updateOrder(@RequestParam Long id, @RequestBody UpdateOrderDTO dto) {
+        orderService.updateById(id, dto);
+        return "업데이트 됨";
     }
 
     @DeleteMapping("")

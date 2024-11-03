@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Configuration;
 public class LineApiConfiguration {
     @Bean
     public LineMessagingClient lineMessagingClient(
-            @Value("${line.channel.token}") String channelToken) {
-        return LineMessagingClient.builder("PXUSKTc86Ub6gZL5RXggwQMxIRKmkWYH3yBPiJzBsmzCTp6YnNiPzkLe7H0bU/7GWJOAlEorA3mImujS0b7nM0DSYH4MoSjag/vq+S7DdZbjPjHTsmwIuav0q6sFmFwnN886GzPuuAXKus0pdHgTVAdB04t89/1O/w1cDnyilFU=").build();
+            @Value(".${line.channel.token}") String channelToken) {
 
+        return LineMessagingClient.builder(channelToken).build();
+        // PXUSKTc86Ub6gZL5RXggwQMxIRKmkWYH3yBPiJzBsmzCTp6YnNiPzkLe7H0bU/7GWJOAlEorA3mImujS0b7nM0DSYH4MoSjag/vq+S7DdZbjPjHTsmwIuav0q6sFmFwnN886GzPuuAXKus0pdHgTVAdB04t89/1O/w1cDnyilFU=
     }
 }
