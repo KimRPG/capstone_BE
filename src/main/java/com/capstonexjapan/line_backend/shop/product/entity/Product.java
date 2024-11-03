@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
@@ -45,13 +46,16 @@ public class Product {
     @UpdateTimestamp
     private Date updatedAt;
 
+    @Column(columnDefinition = "vector(1536)")
+    private float[] embedding;
+
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
 
 
 
-    public Product toEntity(CreateProduct dto,Store store, String imageUrl) {
+    public Product toEntity(CreateProduct dto,Store store, String imageUrl, float[] embedding) {
         return Product.builder()
                 .name(dto.getName())
                 .imageUrl(imageUrl)
@@ -62,10 +66,10 @@ public class Product {
                 .discount(dto.getDiscount())
                 .status(ProductStatus.AVAILABLE)
                 .store(store)
+                .embedding(embedding)
                 .build();
     }
-
-    public Product toEntity(CreateProduct dto,Store store) {
+    public Product toEntity(CreateProduct dto,Store store, float[] embedding) {
         return Product.builder()
                 .name(dto.getName())
                 .price(dto.getPrice())
@@ -75,11 +79,14 @@ public class Product {
                 .discount(dto.getDiscount())
                 .status(ProductStatus.AVAILABLE)
                 .store(store)
+                .embedding(embedding)
                 .build();
     }
-
-    public void update(UpdateProduct dto) {
-        if (StringUtils.isNotBlank(dto.getName())) this.name = dto.getName();
+    public void update(UpdateProduct dto, float[] embedding) {
+        if (StringUtils.isNotBlank(dto.getName())) {
+            this.name = dto.getName();
+            this.embedding = embedding;
+        };
         if (StringUtils.isNotBlank(dto.getImageUrl())) this.imageUrl = dto.getImageUrl();
         if (Objects.nonNull(dto.getPrice())) this.price = dto.getPrice();
         if (Objects.nonNull(dto.getStatus())) this.status = dto.getStatus();

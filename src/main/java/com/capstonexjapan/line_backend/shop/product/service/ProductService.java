@@ -1,5 +1,6 @@
 package com.capstonexjapan.line_backend.shop.product.service;
 
+import com.capstonexjapan.line_backend.ai.service.AIService;
 import com.capstonexjapan.line_backend.ftp.FtpServer;
 import com.capstonexjapan.line_backend.shop.product.controller.request.CreateProduct;
 import com.capstonexjapan.line_backend.shop.product.controller.request.UpdateProduct;
@@ -23,16 +24,19 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepo productRepo;
     private final StoreService storeService;
+    private final AIService aiService;
     private final FtpServer ftpServer;
 
     public void addProduct(CreateProduct dto, String filename) {
         Store store = storeService.findById(dto.getStoreId());
-        productRepo.save(new Product().toEntity(dto, store, filename));
+        float[] embedding = aiService.embedding(dto.getName());
+        productRepo.save(new Product().toEntity(dto, store, filename,embedding));
     }
 
     public void addProduct(CreateProduct dto) {
         Store store = storeService.findById(dto.getStoreId());
-        productRepo.save(new Product().toEntity(dto,store));
+        float[] embedding = aiService.embedding(dto.getName());
+        productRepo.save(new Product().toEntity(dto,store,embedding));
     }
 
     public List<ReadProduct> readAllProduct() {
@@ -57,7 +61,12 @@ public class ProductService {
 
     @Transactional
     public void updateById(Long id, UpdateProduct dto) {
-        findById(id).update(dto);
+        float[] embedding = new float[1536];
+
+        if(!dto.getName().isEmpty()){
+            embedding = aiService.embedding(dto.getName());
+        }
+        findById(id).update(dto,embedding);
     }
 
     public void deleteById(Long id) {
