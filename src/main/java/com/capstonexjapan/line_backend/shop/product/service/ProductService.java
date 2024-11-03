@@ -47,7 +47,10 @@ public class ProductService {
     }
 
     public List<Product> findAllProduct() {
-        return productRepo.findAll();
+        return productRepo.findAllBy()
+                .stream()
+                .map(entity -> new Product().toEntity(entity))
+                .collect(Collectors.toList());
     }
 
     public ReadProduct readProduct(Long id) {

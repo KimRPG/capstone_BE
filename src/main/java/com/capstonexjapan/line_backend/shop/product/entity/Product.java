@@ -2,6 +2,7 @@ package com.capstonexjapan.line_backend.shop.product.entity;
 
 import com.capstonexjapan.line_backend.shop.product.controller.request.CreateProduct;
 import com.capstonexjapan.line_backend.shop.product.controller.request.UpdateProduct;
+import com.capstonexjapan.line_backend.shop.product.repository.ProductInfoMapping;
 import com.capstonexjapan.line_backend.shop.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,22 +30,6 @@ public class Product {
 
     @Column(name = "image_url")
     private String imageUrl;
-
-    public Product(Long productId, String name, String imageUrl, Integer price, ProductStatus status, Integer amount, String description, String brand, Integer discount, Date createdAt, Date updatedAt, Store store) {
-        this.productId = productId;
-        this.name = name;
-        this.imageUrl = imageUrl;
-        this.price = price;
-        this.status = status;
-        this.amount = amount;
-        this.description = description;
-        this.brand = brand;
-        this.discount = discount;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.store = store;
-    }
-
     private Integer price;
 
     @Enumerated(EnumType.STRING)
@@ -69,8 +54,37 @@ public class Product {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    public Product(Long productId, String name, String imageUrl, Integer price, ProductStatus status, Integer amount, String description, String brand, Integer discount, Date createdAt, Date updatedAt, Store store) {
+        this.productId = productId;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.price = price;
+        this.status = status;
+        this.amount = amount;
+        this.description = description;
+        this.brand = brand;
+        this.discount = discount;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.store = store;
+    }
 
-
+    public Product toEntity(ProductInfoMapping dto) {
+        return Product.builder()
+                .productId(dto.getProductId())
+                .name(dto.getName())
+                .imageUrl(dto.getImageUrl())
+                .price(dto.getPrice())
+                .amount(dto.getAmount())
+                .description(dto.getDescription())
+                .brand(dto.getBrand())
+                .discount(dto.getDiscount())
+                .status(ProductStatus.AVAILABLE)
+                .store(dto.getStore())
+                .createdAt(dto.getCreatedAt())
+                .createdAt(dto.getUpdatedAt())
+                .build();
+    }
     public Product toEntity(CreateProduct dto,Store store, String imageUrl, float[] embedding) {
         return Product.builder()
                 .name(dto.getName())
