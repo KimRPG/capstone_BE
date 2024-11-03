@@ -59,7 +59,7 @@ public class ProductService {
     }
 
     public Product findById(Long id) {
-        return productRepo.findById(id).orElseThrow();
+        return new Product().toEntity(productRepo.findByProductId(id));
     }
 
     @Transactional
