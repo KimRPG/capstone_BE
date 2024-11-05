@@ -82,7 +82,7 @@ public class Product {
                 .status(ProductStatus.AVAILABLE)
                 .store(dto.getStore())
                 .createdAt(dto.getCreatedAt())
-                .createdAt(dto.getUpdatedAt())
+                .updatedAt(dto.getUpdatedAt())
                 .build();
     }
     public Product toEntity(CreateProduct dto,Store store, String imageUrl, float[] embedding) {
