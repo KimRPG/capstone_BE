@@ -36,7 +36,7 @@ public class AIService {
     }
 
 
-    public String getRecommend(Request request){
-        return  aiJDBC.check(embedding(request.request())).get(0).getName();
+    public String getRecommend(String request){
+        return  aiJDBC.check(embedding(request)).get(0).getName();
     }
 }

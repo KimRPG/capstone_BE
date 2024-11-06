@@ -54,10 +54,9 @@ public class LineWebhookController {
                 MessageEvent messageEvent = (MessageEvent) event;
                 if (messageEvent.getMessage() instanceof TextMessageContent) {
                     String userMessage = ((TextMessageContent) messageEvent.getMessage()).getText();
-                    Request userRequest = new Request(userMessage);
                     String replyToken = messageEvent.getReplyToken();
                     String userId = messageEvent.getSource().getUserId();
-                    handleTextMessage(replyToken, userRequest, userId); //
+                    handleTextMessage(replyToken, userMessage, userId); //
                 }
             } else if (event instanceof PostbackEvent) { // Postback 이벤트 처리
                 PostbackEvent postbackEvent = (PostbackEvent) event;
@@ -71,7 +70,7 @@ public class LineWebhookController {
         return ResponseEntity.ok("Webhook handled");
     }
 
-    private void handleTextMessage(String replyToken, Request userMessage, String userId) {
+    private void handleTextMessage(String replyToken, String userMessage, String userId) {
         // 받은 메시지에 따른 API 호출 로직
 //        switch (userMessage) {
 //            case "기본":
@@ -111,7 +110,7 @@ public class LineWebhookController {
                     productCard.setDescription(product.getDescription());
                     productCard.setPrice("¥" + product.getPrice());
                     productCard.setImageUrl(product.getImageUrl());
-                    productCard.setProductUrl("http://172.17.197.2:5174/productview/" + product.getProductId());
+                    productCard.setProductUrl("http://172.17.197.2:5173/productview/" + product.getProductId());
                     return productCard;
                 }).collect(Collectors.toList());
 
@@ -119,21 +118,21 @@ public class LineWebhookController {
                 break;
 
             case "배송":
-                sendContactButtonMessage(replyToken, "배송 상태가 궁금하신가요?", "배송조회", "http://172.17.197.2:5174/shippingdetail", "+821012345678");
+                sendContactButtonMessage(replyToken, "배송 상태가 궁금하신가요?", "배송조회", "http://172.17.197.2:5173/shippingdetail", "+821012345678");
                 break;
 
             case "환불":
-                sendContactButtonMessage(replyToken, "환불 정보가 궁금하신가요?", "결제내역", "http://172.17.197.2:5174/orderlist", "+821012345678");
+                sendContactButtonMessage(replyToken, "환불 정보가 궁금하신가요?", "결제내역", "http://172.17.197.2:5173/orderlist", "+821012345678");
                 break;
 
             default:
-                sendContactButtonMessage(replyToken, "문의가 필요하시면 아래 버튼을 눌러주세요: " + category, "도움 요청", "http://172.17.197.2:5174/mypage", "+821012345678");
+                sendContactButtonMessage(replyToken, "문의가 필요하시면 아래 버튼을 눌러주세요: " + category, "도움 요청", "http://172.17.197.2:5173/mypage", "+821012345678");
                 break;
         }
     }
 
     // AI 카테고리 가져오는 메서드 (현승이형이 어떻게 할까...?)
-    private String getCategoryFromAI(Request userMessage) {
+    private String getCategoryFromAI(String userMessage) {
 
 
         return aiService.getRecommend(userMessage); // 가상값
@@ -142,12 +141,10 @@ public class LineWebhookController {
     private List<Product> fetchRecommendedProducts() {
         // 임의의 제품 목록 반환
         return List.of(
-                new Product(4L, "르세핀턱와이드데임팬츠 (3color)", "https://capstone.thewc.co.jp/A/e2636e9b-5894-4e76-88f8-4e833c703daf.jpg", 1800, ProductStatus.AVAILABLE, 100, "#스트릿 #캐주얼", "앤드모어", null, new Date(), new Date(), null),
-                new Product(5L, "체크 오버 남방", "https://capstone.thewc.co.jp/A/66de97c8-b0c7-455f-b641-59229a0c5d9f.jpg", 1680, ProductStatus.AVAILABLE, 100, "#심플베이직 #스트릿", "코히", null, new Date(), new Date(), null),
-                new Product(6L, "루즈 니트", "https://capstone.thewc.co.jp/A/e5426721-8284-4552-af98-6161a2a0f98a.jpg", 2350, ProductStatus.AVAILABLE, 40, "#심플베이직 #캐주얼", "어바웃영", null, new Date(), new Date(), null),
-                new Product(7L, "심볼 로고 맨투맨", "https://capstone.thewc.co.jp/A/03c01263-5df9-4a67-95e2-afe8a4118f7b.jpg", 2790, ProductStatus.AVAILABLE, 40, "#캐주얼브랜드 #4차완판", "로스트리퍼블릭", null, new Date(), new Date(), null),
-                new Product(8L, "부츠컷 데님", "https://capstone.thewc.co.jp/A/771fa399-7e83-46eb-bc9f-7471ca203a63.jpg", 2129, ProductStatus.AVAILABLE, 50, "#로맨틱 #심플베이직", "조이조이", null, new Date(), new Date(), null),
-                new Product(9L, "오버 니트", "https://capstone.thewc.co.jp/A/3abfb50e-dbc6-4b27-ae76-8c96c8aae93f.jpg", 2880, ProductStatus.AVAILABLE, 30, "#스트릿 #캐주얼", "하이쭈", null, new Date(), new Date(), null)
+                new Product(1L, "르세핀턱와이드데임팬츠 (3color)", "https://capstone.thewc.co.jp/A/e2636e9b-5894-4e76-88f8-4e833c703daf.jpg", 1800, ProductStatus.AVAILABLE, 100, "#스트릿 #캐주얼", "앤드모어", null, new Date(), new Date(), null),
+                new Product(2L, "체크 오버 남방", "https://capstone.thewc.co.jp/A/66de97c8-b0c7-455f-b641-59229a0c5d9f.jpg", 1680, ProductStatus.AVAILABLE, 100, "#심플베이직 #스트릿", "코히", null, new Date(), new Date(), null),
+                new Product(3L, "루즈 니트", "https://capstone.thewc.co.jp/A/e5426721-8284-4552-af98-6161a2a0f98a.jpg", 2350, ProductStatus.AVAILABLE, 40, "#심플베이직 #캐주얼", "어바웃영", null, new Date(), new Date(), null),
+                new Product(4L, "심볼 로고 맨투맨", "https://capstone.thewc.co.jp/A/03c01263-5df9-4a67-95e2-afe8a4118f7b.jpg", 2790, ProductStatus.AVAILABLE, 40, "#캐주얼브랜드 #4차완판", "로스트리퍼블릭", null, new Date(), new Date(), null)
         );
     }
 

@@ -5,6 +5,7 @@ import com.capstonexjapan.line_backend.ai.controller.response.Request;
 import com.capstonexjapan.line_backend.ai.service.AIService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class AiController {
 
     @GetMapping("/ai/recommend")
     public String recommend(@RequestBody Request dto)throws IOException {
-        return aiService.getRecommend(dto);
+        return aiService.getRecommend(dto.request());
     }
 }
 
