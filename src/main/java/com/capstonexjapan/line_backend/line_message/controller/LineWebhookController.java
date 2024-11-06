@@ -134,9 +134,9 @@ public class LineWebhookController {
 
     // AI 카테고리 가져오는 메서드 (현승이형이 어떻게 할까...?)
     private String getCategoryFromAI(Request userMessage) {
-        aiService.getRecommend(userMessage);
 
-        return "추천"; // 가상값
+
+        return aiService.getRecommend(userMessage); // 가상값
     }
 
     private List<Product> fetchRecommendedProducts() {
