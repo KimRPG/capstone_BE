@@ -1,5 +1,7 @@
 package com.capstonexjapan.line_backend.line_message.controller;
 
+import com.capstonexjapan.line_backend.ai.controller.response.Request;
+import com.capstonexjapan.line_backend.ai.service.AIService;
 import com.capstonexjapan.line_backend.line_message.dto.MessageDTO;
 import com.capstonexjapan.line_backend.line_message.service.MessageService;
 import com.capstonexjapan.line_backend.shop.product.entity.Product;
@@ -40,6 +42,7 @@ public class LineWebhookController {
     private final LineMessagingClient lineMessagingClient;
     private final MessageService messageService;
     private final MessageController messageController;
+    private final AIService aiService;
 
     @PostMapping
     public ResponseEntity<String> handleWebhook(@RequestBody CallbackRequest callbackRequest) {
@@ -51,9 +54,10 @@ public class LineWebhookController {
                 MessageEvent messageEvent = (MessageEvent) event;
                 if (messageEvent.getMessage() instanceof TextMessageContent) {
                     String userMessage = ((TextMessageContent) messageEvent.getMessage()).getText();
+                    Request userRequest = new Request(userMessage);
                     String replyToken = messageEvent.getReplyToken();
                     String userId = messageEvent.getSource().getUserId();
-                    handleTextMessage(replyToken, userMessage, userId); //
+                    handleTextMessage(replyToken, userRequest, userId); //
                 }
             } else if (event instanceof PostbackEvent) { // Postback 이벤트 처리
                 PostbackEvent postbackEvent = (PostbackEvent) event;
@@ -67,7 +71,7 @@ public class LineWebhookController {
         return ResponseEntity.ok("Webhook handled");
     }
 
-    private void handleTextMessage(String replyToken, String userMessage, String userId) {
+    private void handleTextMessage(String replyToken, Request userMessage, String userId) {
         // 받은 메시지에 따른 API 호출 로직
 //        switch (userMessage) {
 //            case "기본":
@@ -92,7 +96,7 @@ public class LineWebhookController {
 //        }
 
         String category = getCategoryFromAI(userMessage);
-        List<Product> recommendedProducts = ("추천".equals(category)) ? fetchRecommendedProducts(userMessage) : null;
+        List<Product> recommendedProducts = ("추천".equals(category)) ? fetchRecommendedProducts() : null;
         handleAIResponse(replyToken, category, userId, recommendedProducts);
     }
 
@@ -129,12 +133,13 @@ public class LineWebhookController {
     }
 
     // AI 카테고리 가져오는 메서드 (현승이형이 어떻게 할까...?)
-    private String getCategoryFromAI(String userMessage) {
-        // AI 호출 로직 추가
+    private String getCategoryFromAI(Request userMessage) {
+        aiService.getRecommend(userMessage);
+
         return "추천"; // 가상값
     }
 
-    private List<Product> fetchRecommendedProducts(String userMessage) {
+    private List<Product> fetchRecommendedProducts() {
         // 임의의 제품 목록 반환
         return List.of(
                 new Product(4L, "르세핀턱와이드데임팬츠 (3color)", "https://capstone.thewc.co.jp/A/e2636e9b-5894-4e76-88f8-4e833c703daf.jpg", 1800, ProductStatus.AVAILABLE, 100, "#스트릿 #캐주얼", "앤드모어", null, new Date(), new Date(), null),
