@@ -50,7 +50,7 @@ public class OrderEntity {
                 .currency(dto.getCurrency())
                 .quantity(dto.getQuantity())
                 .request(dto.getRequest())
-                .orderStatus("주문 확인 중")
+                .orderStatus(dto.getOrderStatus())
                 .paymentMethod(dto.getPaymentMethod())
                 .productId(dto.getProductId())
                 .userId(dto.getUserId())
