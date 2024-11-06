@@ -54,10 +54,9 @@ public class LineWebhookController {
                 MessageEvent messageEvent = (MessageEvent) event;
                 if (messageEvent.getMessage() instanceof TextMessageContent) {
                     String userMessage = ((TextMessageContent) messageEvent.getMessage()).getText();
-                    Request userRequest = new Request(userMessage);
                     String replyToken = messageEvent.getReplyToken();
                     String userId = messageEvent.getSource().getUserId();
-                    handleTextMessage(replyToken, userRequest, userId); //
+                    handleTextMessage(replyToken, userMessage, userId); //
                 }
             } else if (event instanceof PostbackEvent) { // Postback 이벤트 처리
                 PostbackEvent postbackEvent = (PostbackEvent) event;
@@ -71,7 +70,7 @@ public class LineWebhookController {
         return ResponseEntity.ok("Webhook handled");
     }
 
-    private void handleTextMessage(String replyToken, Request userMessage, String userId) {
+    private void handleTextMessage(String replyToken, String userMessage, String userId) {
         // 받은 메시지에 따른 API 호출 로직
 //        switch (userMessage) {
 //            case "기본":
@@ -133,7 +132,7 @@ public class LineWebhookController {
     }
 
     // AI 카테고리 가져오는 메서드 (현승이형이 어떻게 할까...?)
-    private String getCategoryFromAI(Request userMessage) {
+    private String getCategoryFromAI(String userMessage) {
 
 
         return aiService.getRecommend(userMessage); // 가상값
