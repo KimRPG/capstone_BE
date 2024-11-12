@@ -37,12 +37,12 @@ public class AIService {
     }
 
 
-    public String getRecommend(String request){
-        return  aiJDBC.check(embedding(request)).get(0).getName();
+    public String getRecommend(float[] request){
+        return  aiJDBC.check(request).get(0).getName();
     }
 
-    public List<Product> getRecommendProduct(String request) {
-        return aiJDBC.recommendProduct(embedding(request));
+    public List<Product> getRecommendProduct(float[] embedding) {
+        return aiJDBC.recommendProduct(embedding);
     }
 
 }

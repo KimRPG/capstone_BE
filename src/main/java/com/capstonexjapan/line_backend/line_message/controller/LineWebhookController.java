@@ -24,6 +24,7 @@ import com.linecorp.bot.model.message.flex.unit.FlexFontSize;
 import com.linecorp.bot.model.message.flex.unit.FlexLayout;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -94,8 +95,9 @@ public class LineWebhookController {
 //                break;
 //        }
 
-        String category = getCategoryFromAI(userMessage);
-        List<Product> recommendedProducts = ("추천".equals(category)) ? fetchRecommendedProducts() : null;
+        float[] embedding = embedding(userMessage);
+        String category = getCategoryFromAI(embedding);
+        List<Product> recommendedProducts = ("추천".equals(category)) ? aiService.getRecommendProduct(embedding) : null;
         handleAIResponse(replyToken, category, userId, recommendedProducts);
     }
 
@@ -104,15 +106,7 @@ public class LineWebhookController {
         switch (category) {
             case "추천":
                 // 추천일 때: ProductCard 전송
-                List<MessageDTO.ProductCardRequest> productList = recommendedProducts.stream().map(product -> {
-                    MessageDTO.ProductCardRequest productCard = new MessageDTO.ProductCardRequest();
-                    productCard.setTitle(product.getName());
-                    productCard.setDescription(product.getDescription());
-                    productCard.setPrice("¥" + product.getPrice());
-                    productCard.setImageUrl(product.getImageUrl());
-                    productCard.setProductUrl("http://172.17.197.2:5173/productview/" + product.getProductId());
-                    return productCard;
-                }).collect(Collectors.toList());
+                List<MessageDTO.ProductCardRequest> productList = recommendedProducts.stream().map(MessageDTO.ProductCardRequest::toDto).collect(Collectors.toList());
 
                 messageService.publishProductCardMessage(userId, productList).subscribe();
                 break;
@@ -131,27 +125,24 @@ public class LineWebhookController {
         }
     }
 
+    private float[] embedding(String userMessage) {
+        return aiService.embedding(userMessage);
+    }
+
     // AI 카테고리 가져오는 메서드 (현승이형이 어떻게 할까...?)
-    private String getCategoryFromAI(String userMessage) {
+    private String getCategoryFromAI(float[] embedding) {
 
-
-        return aiService.getRecommend(userMessage); // 가상값
+        return aiService.getRecommend(embedding); // 가상값
     }
 
-    private List<Product> fetchRecommendedProducts() {
-        // 임의의 제품 목록 반환
-        return List.of(
-                new Product(1L, "르세핀턱와이드데임팬츠 (3color)", "https://capstone.thewc.co.jp/A/e2636e9b-5894-4e76-88f8-4e833c703daf.jpg", 1800, ProductStatus.AVAILABLE, 100, "#스트릿 #캐주얼", "앤드모어", null, new Date(), new Date(), null),
-                new Product(2L, "체크 오버 남방", "https://capstone.thewc.co.jp/A/66de97c8-b0c7-455f-b641-59229a0c5d9f.jpg", 1680, ProductStatus.AVAILABLE, 100, "#심플베이직 #스트릿", "코히", null, new Date(), new Date(), null),
-                new Product(3L, "루즈 니트", "https://capstone.thewc.co.jp/A/e5426721-8284-4552-af98-6161a2a0f98a.jpg", 2350, ProductStatus.AVAILABLE, 40, "#심플베이직 #캐주얼", "어바웃영", null, new Date(), new Date(), null),
-                new Product(4L, "심볼 로고 맨투맨", "https://capstone.thewc.co.jp/A/03c01263-5df9-4a67-95e2-afe8a4118f7b.jpg", 2790, ProductStatus.AVAILABLE, 40, "#캐주얼브랜드 #4차완판", "로스트리퍼블릭", null, new Date(), new Date(), null)
-        );
-    }
+//    private List<Product> fetchRecommendedProducts() {
+//        // 임의의 제품 목록 반환
+//    }
 
     // PostbackEvent 처리 메서드
     private void handlePostbackEvent(String replyToken, String postbackData, String userId) {
         if ("상품".equals(postbackData)) {
-            callProductCardApi(replyToken, postbackData, userId); // Postback이 "상품"인 경우
+            callProductCardApi(userId); // Postback이 "상품"인 경우
         } else {
             // 다른 Postback 처리 로직
             TextMessage replyMessage = new TextMessage("Postback received: " + postbackData);
@@ -205,22 +196,10 @@ public class LineWebhookController {
 //    }
 
     // 상품 카드 메시지 API 호출
-    private void callProductCardApi(String replyToken, String userMessage, String userId) {
-        MessageDTO.ProductCardRequest product1 = new MessageDTO.ProductCardRequest();
-        product1.setTitle("엔보스체크 미니스커트");
-        product1.setDescription("디자인이 귀여운 미니스커트입니다.");
-        product1.setPrice("¥2,340+세금");
-        product1.setImageUrl("https://cf.product-image.s.zigzag.kr/original/c/14/814/588/148145880-1518185832611658513.gif?width=720&height=720&quality=80&format=jpeg");
-        product1.setProductUrl("https://www.zigzag.kr/catalog/products/148145880");
+    private void callProductCardApi( String userId) {
 
-        MessageDTO.ProductCardRequest product2 = new MessageDTO.ProductCardRequest();
-        product2.setTitle("기본 A라인 스커트");
-        product2.setDescription("심플한 디자인의 스커트입니다.");
-        product2.setPrice("¥2,450+세금");
-        product2.setImageUrl("https://ardormonday.com/web/product/big/202401/4e60938b1db6d796e710598524672edf.jpg");
-        product2.setProductUrl("https://ardormonday.com/product/%EA%B8%B0%EB%B3%B8%ED%85%9C%F0%9F%92%9C%ED%97%88%EB%A6%AC%EB%B0%B4%EB%94%A9-%ED%97%88%EB%B0%8D-%EC%97%90%EC%9D%B4%EB%9D%BC%EC%9D%B8-%EC%8A%A4%EC%BB%A4%ED%8A%B8-%EB%92%B7%EB%B0%B4%EB%94%A9-%EC%97%90%EC%9D%B4%ED%95%8F-%EB%AA%A8%EC%A7%81%EC%8A%A4%EC%BB%A4%ED%8A%B8-%EA%B8%B0%EB%B3%B8-%EB%B2%A0%EC%9D%B4%EC%A7%81-%EB%AC%B4%EC%A7%80%EC%B9%98%EB%A7%88/4238/");
 
-        List<MessageDTO.ProductCardRequest> productList = Arrays.asList(product1, product2);
+        List<MessageDTO.ProductCardRequest> productList = Arrays.asList();
 
         messageService.publishProductCardMessage(userId, productList).subscribe();
     }

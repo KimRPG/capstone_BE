@@ -31,12 +31,12 @@ public class AiController {
 
     @GetMapping("/ai/recommend")
     public String recommend(@RequestBody Request dto)throws IOException {
-        return aiService.getRecommend(dto.request());
+        return aiService.getRecommend(aiService.embedding(dto.request()));
     }
 
     @GetMapping("/ai/recommend/product")
     public List<Product> recommendProduct(@RequestBody Request dto){
-        return aiService.getRecommendProduct(dto.request());
+        return aiService.getRecommendProduct(aiService.embedding(dto.request()));
     }
 }
 
