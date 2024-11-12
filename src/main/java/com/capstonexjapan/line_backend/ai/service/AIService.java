@@ -7,6 +7,7 @@ import com.capstonexjapan.line_backend.ai.controller.response.ResponseDTO;
 import com.capstonexjapan.line_backend.ai.entity.Recommend;
 import com.capstonexjapan.line_backend.ai.repo.AiJDBC;
 import com.capstonexjapan.line_backend.ai.repo.RecommendRepo;
+import com.capstonexjapan.line_backend.shop.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.client.ChatClient;
 
@@ -39,4 +40,9 @@ public class AIService {
     public String getRecommend(String request){
         return  aiJDBC.check(embedding(request)).get(0).getName();
     }
+
+    public List<Product> getRecommendProduct(String request) {
+        return aiJDBC.recommendProduct(embedding(request));
+    }
+
 }
